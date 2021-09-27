@@ -20,7 +20,7 @@ class BestBooks extends React.Component {
       allDigimons: allData.data
     })
 
-    console.log(this.state.allDigimons);
+    console.log(this.props.auth0);
   }
   handelAdd = async (digimon) => {
     console.log(digimon);
@@ -28,10 +28,10 @@ class BestBooks extends React.Component {
       name: digimon.name,
       url: digimon.img,
       level: digimon.level,
-      email: 'test@test.com'
+      email: this.props.auth0.user.email
     }
     console.log(reqBody);
-    const resData = await axios.post(`http://localhost:3002/favs`, reqBody);
+    const resData = await axios.post(`${process.env.REACT_APP_URL_PORT}/favs`, reqBody);
     console.log(resData)
 
   }

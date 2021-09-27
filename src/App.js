@@ -37,17 +37,21 @@ class App extends React.Component {
   }
 
   render() {
-    // const isAuth = this.props.auth0.isAuthenticated
+    const isAuth = this.props.auth0.isAuthenticated
     return (
       <>
         <Router>
-
-          <Header user={this.state.user} onLogout={this.logoutHandler} />
+          {
+            isAuth &&
+            <Header user={this.state.user} onLogout={this.logoutHandler} />
+          }
           <Switch>
             <Route exact path="/">
 
-
-              <BestBooks />
+{
+  isAuth ? 
+  <BestBooks /> : <LoginForm />
+}
 
             </Route>
             <Route exact path="/profile">

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Updatemodel from './Updatemodel';
+import { withAuth0 } from "@auth0/auth0-react";
 
 
 
@@ -17,7 +18,7 @@ export class Myfav extends Component {
         }
     }
     componentDidMount = async () => {
-        const responseData = await axios.get('http://localhost:3002/favs')
+        const responseData = await axios.get(`${process.env.REACT_APP_URL_PORT}/favs?email=${this.props.auth0.user.email}`)
         console.log(responseData.data);
         this.setState({
             myFavData: responseData.data
@@ -25,7 +26,7 @@ export class Myfav extends Component {
     }
     handelDelete = async (digimon) => {
         console.log(digimon._id);
-        const deleteRes = await axios.delete(`http://localhost:3002/favs/${digimon._id}`);
+        const deleteRes = await axios.delete(`${process.env.REACT_APP_URL_PORT}/favs/${digimon._id}`);
         if (deleteRes.data.deletedCount) {            
             const newArr = this.state.myFavData.filter(elem => elem._id !== digimon._id)
             this.setState({
@@ -45,11 +46,11 @@ export class Myfav extends Component {
             name: e.target.name.value,
             url: e.target.img.value,
             level: e.target.level.value,
-            email: 'test@test.com'
+            email: this.props.auth0.user.email
           }
           console.log(reqBody);
           console.log(this.state.selectedOject._id);
-          const resUpdate = await axios.put(`http://localhost:3002/favs/${this.state.selectedOject._id}`,reqBody)
+          const resUpdate = await axios.put(`${process.env.REACT_APP_URL_PORT}/favs/${this.state.selectedOject._id}`,reqBody)
           console.log(resUpdate.data);
           const newArr = this.state.myFavData.map(elem =>{
               if (resUpdate.data._id === elem._id) {
@@ -99,4 +100,4 @@ export class Myfav extends Component {
     }
 }
 
-export default Myfav
+export default withAuth0(Myfav)
