@@ -1,12 +1,19 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import Myfav from './Myfav'
+import LoginForm from './LoginForm'
+import BestBooks from './BestBooks';
+import Profile from './Profile'
+import { withAuth0 } from "@auth0/auth0-react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+require('dotenv').config();
+
 
 class App extends React.Component {
 
@@ -30,15 +37,26 @@ class App extends React.Component {
   }
 
   render() {
+    const isAuth = this.props.auth0.isAuthenticated
     return (
       <>
         <Router>
+          {isAuth && 
           <Header user={this.state.user} onLogout={this.logoutHandler} />
+          }
           <Switch>
             <Route exact path="/">
-              {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
+              {
+                isAuth ? 
+                <BestBooks /> : <LoginForm />
+              }
             </Route>
-            {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
+            <Route exact path="/myfav">
+              <Myfav />
+            </Route>
           </Switch>
           <Footer />
         </Router>
@@ -47,4 +65,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);
