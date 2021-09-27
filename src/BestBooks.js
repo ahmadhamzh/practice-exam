@@ -32,7 +32,7 @@ class BestBooks extends React.Component {
     }
     console.log(reqBody);
     const resData = await axios.post(`${process.env.REACT_APP_URL_PORT}/favs`, reqBody);
-    console.log(resData)
+    console.log(resData);
 
   }
 
