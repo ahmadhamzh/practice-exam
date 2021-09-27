@@ -37,19 +37,18 @@ class App extends React.Component {
   }
 
   render() {
-    const isAuth = this.props.auth0.isAuthenticated
+    // const isAuth = this.props.auth0.isAuthenticated
     return (
       <>
         <Router>
-          {isAuth && 
+
           <Header user={this.state.user} onLogout={this.logoutHandler} />
-          }
           <Switch>
             <Route exact path="/">
-              {
-                isAuth ? 
-                <BestBooks /> : <LoginForm />
-              }
+
+
+              <BestBooks />
+
             </Route>
             <Route exact path="/profile">
               <Profile />
